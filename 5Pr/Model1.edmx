@@ -1,0 +1,381 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="Хранилище PhotoModel" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Admin">
+          <Key>
+            <PropertyRef Name="ID_admin" />
+          </Key>
+          <Property Name="ID_admin" Type="int" Nullable="false" />
+          <Property Name="Login" Type="nvarchar" MaxLength="255" Nullable="false" />
+          <Property Name="Pass" Type="nvarchar" MaxLength="255" Nullable="false" />
+          <Property Name="Nickname" Type="nvarchar" MaxLength="255" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Client">
+          <Key>
+            <PropertyRef Name="ID_client" />
+          </Key>
+          <Property Name="ID_client" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Login" Type="nvarchar" MaxLength="255" Nullable="false" />
+          <Property Name="Pass" Type="nvarchar" MaxLength="255" Nullable="false" />
+          <Property Name="Nickname" Type="nvarchar" MaxLength="255" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Location">
+          <Key>
+            <PropertyRef Name="ID_loc" />
+          </Key>
+          <Property Name="ID_loc" Type="int" Nullable="false" />
+          <Property Name="Square" Type="nvarchar" MaxLength="255" Nullable="false" />
+          <Property Name="Style" Type="nvarchar" MaxLength="255" Nullable="false" />
+          <Property Name="Loc" Type="nvarchar" MaxLength="255" Nullable="false" />
+          <Property Name="Price" Type="nvarchar" MaxLength="255" Nullable="false" />
+          <Property Name="ID_admin" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Photographer">
+          <Key>
+            <PropertyRef Name="ID_photog" />
+          </Key>
+          <Property Name="ID_photog" Type="int" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="255" Nullable="false" />
+          <Property Name="Price" Type="nvarchar" MaxLength="255" Nullable="false" />
+          <Property Name="Exp" Type="nvarchar" MaxLength="255" Nullable="false" />
+          <Property Name="ID_admin" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="RPh">
+          <Key>
+            <PropertyRef Name="ID_rph" />
+          </Key>
+          <Property Name="ID_rph" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ID_photog" Type="int" />
+          <Property Name="ID_loc" Type="int" />
+          <Property Name="ID_client" Type="int" />
+          <Property Name="Loc" Type="nvarchar" MaxLength="255" />
+          <Property Name="Datetime" Type="datetime" />
+        </EntityType>
+        <Association Name="FK_Location_Admin">
+          <End Role="Admin" Type="Self.Admin" Multiplicity="1" />
+          <End Role="Location" Type="Self.Location" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Admin">
+              <PropertyRef Name="ID_admin" />
+            </Principal>
+            <Dependent Role="Location">
+              <PropertyRef Name="ID_admin" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Photographer_Admin">
+          <End Role="Admin" Type="Self.Admin" Multiplicity="1" />
+          <End Role="Photographer" Type="Self.Photographer" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Admin">
+              <PropertyRef Name="ID_admin" />
+            </Principal>
+            <Dependent Role="Photographer">
+              <PropertyRef Name="ID_admin" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_RPh_Client">
+          <End Role="Client" Type="Self.Client" Multiplicity="0..1" />
+          <End Role="RPh" Type="Self.RPh" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Client">
+              <PropertyRef Name="ID_client" />
+            </Principal>
+            <Dependent Role="RPh">
+              <PropertyRef Name="ID_client" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_RPh_Location">
+          <End Role="Location" Type="Self.Location" Multiplicity="0..1" />
+          <End Role="RPh" Type="Self.RPh" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Location">
+              <PropertyRef Name="ID_loc" />
+            </Principal>
+            <Dependent Role="RPh">
+              <PropertyRef Name="ID_loc" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_RPh_Photographer">
+          <End Role="Photographer" Type="Self.Photographer" Multiplicity="0..1" />
+          <End Role="RPh" Type="Self.RPh" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Photographer">
+              <PropertyRef Name="ID_photog" />
+            </Principal>
+            <Dependent Role="RPh">
+              <PropertyRef Name="ID_photog" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="Хранилище PhotoModelContainer">
+          <EntitySet Name="Admin" EntityType="Self.Admin" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Client" EntityType="Self.Client" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Location" EntityType="Self.Location" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Photographer" EntityType="Self.Photographer" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="RPh" EntityType="Self.RPh" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_Location_Admin" Association="Self.FK_Location_Admin">
+            <End Role="Admin" EntitySet="Admin" />
+            <End Role="Location" EntitySet="Location" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Photographer_Admin" Association="Self.FK_Photographer_Admin">
+            <End Role="Admin" EntitySet="Admin" />
+            <End Role="Photographer" EntitySet="Photographer" />
+          </AssociationSet>
+          <AssociationSet Name="FK_RPh_Client" Association="Self.FK_RPh_Client">
+            <End Role="Client" EntitySet="Client" />
+            <End Role="RPh" EntitySet="RPh" />
+          </AssociationSet>
+          <AssociationSet Name="FK_RPh_Location" Association="Self.FK_RPh_Location">
+            <End Role="Location" EntitySet="Location" />
+            <End Role="RPh" EntitySet="RPh" />
+          </AssociationSet>
+          <AssociationSet Name="FK_RPh_Photographer" Association="Self.FK_RPh_Photographer">
+            <End Role="Photographer" EntitySet="Photographer" />
+            <End Role="RPh" EntitySet="RPh" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="PhotoModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Admin">
+          <Key>
+            <PropertyRef Name="ID_admin" />
+          </Key>
+          <Property Name="ID_admin" Type="Int32" Nullable="false" />
+          <Property Name="Login" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Pass" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Nickname" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="Location" Relationship="Self.FK_Location_Admin" FromRole="Admin" ToRole="Location" />
+          <NavigationProperty Name="Photographer" Relationship="Self.FK_Photographer_Admin" FromRole="Admin" ToRole="Photographer" />
+        </EntityType>
+        <EntityType Name="Client">
+          <Key>
+            <PropertyRef Name="ID_client" />
+          </Key>
+          <Property Name="ID_client" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Login" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Pass" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Nickname" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="RPh" Relationship="Self.FK_RPh_Client" FromRole="Client" ToRole="RPh" />
+        </EntityType>
+        <EntityType Name="Location">
+          <Key>
+            <PropertyRef Name="ID_loc" />
+          </Key>
+          <Property Name="ID_loc" Type="Int32" Nullable="false" />
+          <Property Name="Square" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Style" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Loc" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Price" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="ID_admin" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Admin" Relationship="Self.FK_Location_Admin" FromRole="Location" ToRole="Admin" />
+          <NavigationProperty Name="RPh" Relationship="Self.FK_RPh_Location" FromRole="Location" ToRole="RPh" />
+        </EntityType>
+        <EntityType Name="Photographer">
+          <Key>
+            <PropertyRef Name="ID_photog" />
+          </Key>
+          <Property Name="ID_photog" Type="Int32" Nullable="false" />
+          <Property Name="Name" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Price" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Exp" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="ID_admin" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Admin" Relationship="Self.FK_Photographer_Admin" FromRole="Photographer" ToRole="Admin" />
+          <NavigationProperty Name="RPh" Relationship="Self.FK_RPh_Photographer" FromRole="Photographer" ToRole="RPh" />
+        </EntityType>
+        <EntityType Name="RPh">
+          <Key>
+            <PropertyRef Name="ID_rph" />
+          </Key>
+          <Property Name="ID_rph" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ID_photog" Type="Int32" />
+          <Property Name="ID_loc" Type="Int32" />
+          <Property Name="ID_client" Type="Int32" />
+          <Property Name="Loc" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="Datetime" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="Client" Relationship="Self.FK_RPh_Client" FromRole="RPh" ToRole="Client" />
+          <NavigationProperty Name="Location" Relationship="Self.FK_RPh_Location" FromRole="RPh" ToRole="Location" />
+          <NavigationProperty Name="Photographer" Relationship="Self.FK_RPh_Photographer" FromRole="RPh" ToRole="Photographer" />
+        </EntityType>
+        <Association Name="FK_Location_Admin">
+          <End Role="Admin" Type="Self.Admin" Multiplicity="1" />
+          <End Role="Location" Type="Self.Location" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Admin">
+              <PropertyRef Name="ID_admin" />
+            </Principal>
+            <Dependent Role="Location">
+              <PropertyRef Name="ID_admin" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Photographer_Admin">
+          <End Role="Admin" Type="Self.Admin" Multiplicity="1" />
+          <End Role="Photographer" Type="Self.Photographer" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Admin">
+              <PropertyRef Name="ID_admin" />
+            </Principal>
+            <Dependent Role="Photographer">
+              <PropertyRef Name="ID_admin" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_RPh_Client">
+          <End Role="Client" Type="Self.Client" Multiplicity="0..1" />
+          <End Role="RPh" Type="Self.RPh" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Client">
+              <PropertyRef Name="ID_client" />
+            </Principal>
+            <Dependent Role="RPh">
+              <PropertyRef Name="ID_client" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_RPh_Location">
+          <End Role="Location" Type="Self.Location" Multiplicity="0..1" />
+          <End Role="RPh" Type="Self.RPh" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Location">
+              <PropertyRef Name="ID_loc" />
+            </Principal>
+            <Dependent Role="RPh">
+              <PropertyRef Name="ID_loc" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_RPh_Photographer">
+          <End Role="Photographer" Type="Self.Photographer" Multiplicity="0..1" />
+          <End Role="RPh" Type="Self.RPh" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Photographer">
+              <PropertyRef Name="ID_photog" />
+            </Principal>
+            <Dependent Role="RPh">
+              <PropertyRef Name="ID_photog" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="PhotoEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Admin" EntityType="Self.Admin" />
+          <EntitySet Name="Client" EntityType="Self.Client" />
+          <EntitySet Name="Location" EntityType="Self.Location" />
+          <EntitySet Name="Photographer" EntityType="Self.Photographer" />
+          <EntitySet Name="RPh" EntityType="Self.RPh" />
+          <AssociationSet Name="FK_Location_Admin" Association="Self.FK_Location_Admin">
+            <End Role="Admin" EntitySet="Admin" />
+            <End Role="Location" EntitySet="Location" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Photographer_Admin" Association="Self.FK_Photographer_Admin">
+            <End Role="Admin" EntitySet="Admin" />
+            <End Role="Photographer" EntitySet="Photographer" />
+          </AssociationSet>
+          <AssociationSet Name="FK_RPh_Client" Association="Self.FK_RPh_Client">
+            <End Role="Client" EntitySet="Client" />
+            <End Role="RPh" EntitySet="RPh" />
+          </AssociationSet>
+          <AssociationSet Name="FK_RPh_Location" Association="Self.FK_RPh_Location">
+            <End Role="Location" EntitySet="Location" />
+            <End Role="RPh" EntitySet="RPh" />
+          </AssociationSet>
+          <AssociationSet Name="FK_RPh_Photographer" Association="Self.FK_RPh_Photographer">
+            <End Role="Photographer" EntitySet="Photographer" />
+            <End Role="RPh" EntitySet="RPh" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="Хранилище PhotoModelContainer" CdmEntityContainer="PhotoEntities">
+          <EntitySetMapping Name="Admin">
+            <EntityTypeMapping TypeName="PhotoModel.Admin">
+              <MappingFragment StoreEntitySet="Admin">
+                <ScalarProperty Name="ID_admin" ColumnName="ID_admin" />
+                <ScalarProperty Name="Login" ColumnName="Login" />
+                <ScalarProperty Name="Pass" ColumnName="Pass" />
+                <ScalarProperty Name="Nickname" ColumnName="Nickname" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Client">
+            <EntityTypeMapping TypeName="PhotoModel.Client">
+              <MappingFragment StoreEntitySet="Client">
+                <ScalarProperty Name="ID_client" ColumnName="ID_client" />
+                <ScalarProperty Name="Login" ColumnName="Login" />
+                <ScalarProperty Name="Pass" ColumnName="Pass" />
+                <ScalarProperty Name="Nickname" ColumnName="Nickname" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Location">
+            <EntityTypeMapping TypeName="PhotoModel.Location">
+              <MappingFragment StoreEntitySet="Location">
+                <ScalarProperty Name="ID_loc" ColumnName="ID_loc" />
+                <ScalarProperty Name="Square" ColumnName="Square" />
+                <ScalarProperty Name="Style" ColumnName="Style" />
+                <ScalarProperty Name="Loc" ColumnName="Loc" />
+                <ScalarProperty Name="Price" ColumnName="Price" />
+                <ScalarProperty Name="ID_admin" ColumnName="ID_admin" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Photographer">
+            <EntityTypeMapping TypeName="PhotoModel.Photographer">
+              <MappingFragment StoreEntitySet="Photographer">
+                <ScalarProperty Name="ID_photog" ColumnName="ID_photog" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Price" ColumnName="Price" />
+                <ScalarProperty Name="Exp" ColumnName="Exp" />
+                <ScalarProperty Name="ID_admin" ColumnName="ID_admin" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="RPh">
+            <EntityTypeMapping TypeName="PhotoModel.RPh">
+              <MappingFragment StoreEntitySet="RPh">
+                <ScalarProperty Name="ID_rph" ColumnName="ID_rph" />
+                <ScalarProperty Name="ID_photog" ColumnName="ID_photog" />
+                <ScalarProperty Name="ID_loc" ColumnName="ID_loc" />
+                <ScalarProperty Name="ID_client" ColumnName="ID_client" />
+                <ScalarProperty Name="Loc" ColumnName="Loc" />
+                <ScalarProperty Name="Datetime" ColumnName="Datetime" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="Нет" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
